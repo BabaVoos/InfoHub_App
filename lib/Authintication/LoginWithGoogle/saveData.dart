@@ -1,11 +1,11 @@
+import 'package:algad_infohub/modules/home_screen/new_home_screen.dart';
+import 'package:algad_infohub/modules/news_screen/cubit/news_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../modules/home_screen/home_screen.dart';
 import '../../shared/components/icon_broken.dart';
-import '../../shared/cubit/cubit.dart';
 import '../cubit/cubit.dart';
 import '../cubit/states.dart';
 import '../helpers/my_easyloading.dart';
@@ -52,7 +52,7 @@ class _SaveMyUserDataState extends State<SaveMyUserData> {
             context,
             MaterialPageRoute(
               builder: (context) => BlocProvider(
-                  create: (context) => InfoHubCubit(), child: HomeScreen()),
+                  create: (context) => NewsCubit(), child: NewHomeScreen(),),
             ),
           );
         }

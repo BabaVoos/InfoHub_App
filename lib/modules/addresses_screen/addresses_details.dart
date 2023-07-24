@@ -1,7 +1,8 @@
 import 'package:algad_infohub/shared/colors.dart';
 import 'package:algad_infohub/shared/components/icon_broken.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AddressesDetails extends StatelessWidget {
   const AddressesDetails({
@@ -22,24 +23,24 @@ class AddressesDetails extends StatelessWidget {
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(IconBroken.Arrow___Right_2),
+            icon: const Icon(IconBroken.Arrow___Right_2),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           titleSpacing: 0,
-          title: Text(
+          title: const Text(
             'رجوع',
             style: TextStyle(fontSize: 22,color: Colors.black),
           ),
           backgroundColor: Colors.grey[300],
 
           elevation: 0.0,
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -51,30 +52,30 @@ class AddressesDetails extends StatelessWidget {
                       Text(
                        name,
                         style: TextStyle(
-                          color: Colors.orange,
+                          color: mainColor,
                           fontSize: size.width * .06,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
-                      Divider(
-                        color: Colors.black87,
+                      const Divider(
+                        color: mainColor,
                       ),
                       SizedBox(
                         height: size.height * .01,
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.orange,),
+                          border: Border.all(color: mainColor,),
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(size.width * .03),
-                          child: Text(
-                          address,
+                          child: Linkify(
+                            text: address,
                             style: TextStyle(
                               fontSize: size.width * .050,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
                             ),
+                            onOpen: _onOpen,
                           ),
                         ),
                       ),
@@ -94,4 +95,13 @@ class AddressesDetails extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _onOpen(LinkableElement link) async {
+    if (await launch(link.url)) {
+      await canLaunch(link.url);
+    } else {
+      print('ayaaa');
+    }
+  }
+
 }

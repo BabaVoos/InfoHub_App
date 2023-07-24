@@ -1,10 +1,11 @@
 import 'package:algad_infohub/Authintication/cubit/states.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
   AuthCubit() : super(AuthInitialState());
@@ -23,7 +24,8 @@ class AuthCubit extends Cubit<AuthStates> {
   }) {
     firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) {
+        .then((value) async {
+      await FirebaseMessaging.instance.subscribeToTopic('notify');
       saveUserData(
         value.user!,
         username: username,
@@ -43,50 +45,62 @@ class AuthCubit extends Cubit<AuthStates> {
   }) {
     firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
-        .then((value) => emit(LoginSuccessState()))
-        .catchError((error) => emit(LoginFailureState(error.toString())));
+        .then(
+          (value) async {
+            await FirebaseMessaging.instance.subscribeToTopic('notify');
+            emit(
+              LoginSuccessState(),
+            );
+          }
+        )
+        .catchError(
+          (error) => emit(
+            LoginFailureState(
+              error,
+            ),
+          ),
+        );
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  // final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  // Future<UserCredential> signInWithGoogle() async {
+  //   // Trigger the authentication flow
+  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //
+  //   // Obtain the auth details from the request
+  //   final GoogleSignInAuthentication googleAuth =
+  //       await googleUser!.authentication;
+  //
+  //   // Create a new credential
+  //   final credential = GoogleAuthProvider.credential(
+  //     accessToken: googleAuth.accessToken,
+  //     idToken: googleAuth.idToken,
+  //   );
+  //
+  //   emit(LoginSuccessState());
+  //
+  //   // Once signed in, return the UserCredential
+  //   return await FirebaseAuth.instance.signInWithCredential(credential);
+  // }
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    emit(LoginSuccessState());
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
-  Future signInWithGoogle2() async {
-    GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    GoogleSignInAuthentication? googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
-    AuthCredential authCredential = GoogleAuthProvider.credential(
-      idToken: googleSignInAuthentication.idToken,
-      accessToken: googleSignInAuthentication.accessToken,
-    );
-    emit(LoginSuccessState());
-  }
-
+  // Future signInWithGoogle2() async {
+  //   GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+  //   GoogleSignInAuthentication? googleSignInAuthentication =
+  //       await googleSignInAccount!.authentication;
+  //   AuthCredential authCredential = GoogleAuthProvider.credential(
+  //     idToken: googleSignInAuthentication.idToken,
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //   );
+  //   emit(LoginSuccessState());
+  // }
 
   void saveUserData(
     User user, {
     required username,
-        required name,
-        required age,
+    required name,
+    required age,
     required email,
     required gender,
     required phone,
@@ -102,9 +116,12 @@ class AuthCubit extends Cubit<AuthStates> {
       "nationality": nationality,
       "photoUel": auth.currentUser!.photoURL,
     }).then(
-      (value) => emit(
-        LoginSuccessState(),
-      ),
+      (value) async {
+        await FirebaseMessaging.instance.subscribeToTopic('notify');
+        emit(
+          LoginSuccessState(),
+        );
+      } 
     );
   }
 

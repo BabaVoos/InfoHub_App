@@ -1,11 +1,11 @@
 import 'package:algad_infohub/Authintication/register/register_screen.dart';
-import 'package:algad_infohub/modules/home_screen/home_screen.dart';
-import 'package:algad_infohub/modules/splash_screen/splash_screen.dart';
-import 'package:algad_infohub/shared/cubit/cubit.dart';
+import 'package:algad_infohub/modules/home_screen/new_home_screen.dart';
+import 'package:algad_infohub/modules/news_screen/cubit/news_cubit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../shared/colors.dart';
 import '../cubit/cubit.dart';
 import '../cubit/states.dart';
 import '../helpers/my_easyloading.dart';
@@ -38,40 +38,56 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => BlocProvider(
-                  create: (context) => InfoHubCubit(), child: HomeScreen()),
+                create: (context) => NewsCubit(),
+                child: NewHomeScreen(),
+              ),
             ),
           );
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[300],
         body: SafeArea(
           child: Container(
             width: double.infinity,
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.all(20),
             child: Form(
               key: formKey,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Image.asset(
-                      'images/login.png',
-                      width: size.width * .6,
-                      height: size.height * .25,
+                    Container(
+                      width: double.infinity,
+                      height: size.height * .3,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: mainColor,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
+                        image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'images/login.jpg',
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(
-                      height: size.height * .1,
+                    const SizedBox(
+                      height: 20,
                     ),
-                    Text(
+                    const Text(
                       "تسجيل الدخول",
                       style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.bold,
-                        color: Colors.indigo,
+                        color: mainColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     TextFormField(
@@ -85,15 +101,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.send,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: mainColor,
+                        ),
                         hintText: "اسم المستخدم",
+                        hintStyle: const TextStyle(color: mainColor),
                         labelText: 'اسم المستخدم',
+                        labelStyle: const TextStyle(
+                          color: mainColor,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          borderSide: const BorderSide(
+                            color: mainColor,
+                          ),
+                        ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: mainColor,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     TextFormField(
@@ -109,45 +145,58 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       obscureText: AuthCubit.get(context).isPasswordShown,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock,color: mainColor,),
                         suffixIcon: IconButton(
                           onPressed: () {
                             AuthCubit.get(context).changePasswordVisibility();
-                            setState((){});
+                            setState(() {});
                           },
                           icon: Icon(
                             AuthCubit.get(context).isPasswordShown
                                 ? Icons.visibility_off
-                                : Icons.visibility,
+                                : Icons.visibility,color: mainColor,
                           ),
                         ),
                         hintText: "كلمة المرور",
+                        hintStyle: TextStyle(color: mainColor,),
                         labelText: 'كلمة المرور',
+                        labelStyle: TextStyle(color: mainColor),
                         border: OutlineInputBorder(
+                          borderSide: BorderSide(color: mainColor,),
                           borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: mainColor,),
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                      ),
+                    ),),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      color: mainColor,
+                      child: TextButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            login();
+                          } else {
+                            print('Not Valid');
+                          }
+                        },
+                        child: const Text(
+                          'تسجيل الدخول',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                login();
-                              } else {
-                                print('Not Valid');
-                              }
-                            },
-                            child: Text('تسجيل الدخول'),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
+                    const SizedBox(width: 10),
                     Row(
                       children: [
                         TextButton(
@@ -162,11 +211,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'إنشاء حساب؟',
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.indigo,
+                                color: mainColor,
                               ),
                             )),
                       ],

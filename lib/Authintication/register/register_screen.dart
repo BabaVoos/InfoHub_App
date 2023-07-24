@@ -4,7 +4,8 @@ import 'package:algad_infohub/Authintication/helpers/my_easyloading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../shared/colors.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -40,15 +41,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "إنشاء حساب",
           ),
-          backgroundColor: Colors.indigo,
+          backgroundColor: mainColor,
         ),
         body: SafeArea(
           child: Container(
             width: double.infinity,
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.all(
+              20,
+            ),
             child: SingleChildScrollView(
               child: Form(
                 key: formKey,
@@ -57,6 +60,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     SizedBox(
                       height: size.height * .01,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: size.height * .3,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: mainColor,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
+                        image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'images/login.jpg',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextFormField(
                       controller: emailController,
@@ -69,10 +94,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
-                        hintText: "john",
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: mainColor,
+                        ),
+                        hintText: "john / jonh_653",
+                        hintStyle: const TextStyle(
+                          color: mainColor,
+                        ),
+                        labelStyle: const TextStyle(
+                          color: mainColor,
+                        ),
                         labelText: 'اسم المستخدم باللغة الإنجليزية',
-                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          borderSide: const BorderSide(
+                            color: mainColor,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          borderSide: const BorderSide(
+                            color: mainColor,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -89,24 +138,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: AuthCubit.get(context).isPasswordShown,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: mainColor,
+                        ),
                         suffixIcon: IconButton(
                           onPressed: () {
-                            obscureText = !obscureText;
-                            setState(() {});
+                            AuthCubit.get(context).changePasswordVisibility();
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
                           },
                           icon: Icon(
                             obscureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
+                            color: mainColor,
                           ),
                         ),
                         hintText: "كلمة المرور",
+                        hintStyle: const TextStyle(
+                          color: mainColor,
+                        ),
+                        labelStyle: const TextStyle(
+                          color: mainColor,
+                        ),
                         labelText: 'كلمة المرور',
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                            borderSide: const BorderSide(
+                              color: mainColor,
+                            )),
                       ),
                     ),
                     SizedBox(
@@ -123,10 +195,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: mainColor,
+                        ),
                         hintText: "الاسم الثلاثي",
+                        hintStyle: const TextStyle(
+                          color: mainColor,
+                        ),
+                        labelStyle: const TextStyle(
+                          color: mainColor,
+                        ),
                         labelText: 'الاسم الثلاثي',
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          borderSide: const BorderSide(
+                            color: mainColor,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -145,74 +238,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
-                        hintText: "01094284163",
+                      decoration:  InputDecoration(
+                        prefixIcon: const Icon(Icons.email,color: mainColor,),
+                        hintText: "01000000000",
+                        hintStyle: const TextStyle(color: mainColor,),
+                        labelStyle: const TextStyle(color: mainColor,),
                         labelText: 'رقم الهاتف',
-                        border: OutlineInputBorder(),
+                        border:  OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10,),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10,),
+                          borderSide: const BorderSide(color: mainColor,)
+                        ),
                       ),
                       maxLength: 11,
                     ),
                     SizedBox(
                       height: size.height * .01,
                     ),
-                    // TextFormField(
-                    //   controller: genderController,
-                    //   validator: (value) {
-                    //     if (value!.isEmpty) {
-                    //       return "الرجاء ادخال الجنس";
-                    //     }
-                    //     return null;
-                    //   },
-                    //   keyboardType: TextInputType.name,
-                    //   textInputAction: TextInputAction.send,
-                    //   decoration: InputDecoration(
-                    //     prefixIcon: Icon(Icons.female),
-                    //     hintText: "ذكر - أنثى",
-                    //     labelText: 'الجنس',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
-                    // TextFormField(
-                    //   controller: nationalityController,
-                    //   validator: (value) {
-                    //     if (value!.isEmpty) {
-                    //       return "الرجاء ادخال جنسية المستخدم";
-                    //     }
-                    //     return null;
-                    //   },
-                    //   keyboardType: TextInputType.name,
-                    //   textInputAction: TextInputAction.send,
-                    //   decoration: InputDecoration(
-                    //     prefixIcon: Icon(Icons.female),
-                    //     hintText: "سوري",
-                    //     labelText: 'الجنسية',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
                     Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10,),
                         border: Border.all(
-                          color: Colors.grey.withOpacity(.7),
+                          color: mainColor,
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0,),
                         child: DropdownButton(
-                          items: [
+                          items: const [
                             DropdownMenuItem(
-                              child: Text("ذكر"),
                               value: 'ذكر',
+                              child: Text("ذكر",),
                             ),
                             DropdownMenuItem(
-                              child: Text("أنثى"),
                               value: 'أنثى',
+                              child: Text("أنثى"),
                             ),
                           ],
                           iconSize: size.width * .1,
@@ -231,105 +293,106 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10,),
                         border: Border.all(
-                          color: Colors.grey.withOpacity(.8),
+                          color: mainColor,
                         ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButton(
-                          items: [
+                          items: const [
                             DropdownMenuItem(
-                              child: Text("سوريا"),
                               value: 'سوريا',
+                              child: Text("سوريا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("مصر"),
                               value: 'مصر',
+                              child: Text("مصر"),
                             ),
                             DropdownMenuItem(
-                              child: Text("السودان"),
                               value: 'السودان',
+                              child: Text("السودان"),
                             ),
                             DropdownMenuItem(
-                              child: Text("جنوب السودان"),
                               value: 'جنوب السودان',
+                              child: Text("جنوب السودان"),
                             ),
                             DropdownMenuItem(
-                              child: Text("ارتيريا"),
                               value: 'ارتيريا',
+                              child: Text("ارتيريا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("اثيوبيا"),
                               value: 'اثيوبيا',
+                              child: Text("اثيوبيا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("تونس"),
                               value: 'تونس',
+                              child: Text("تونس"),
                             ),
                             DropdownMenuItem(
-                              child: Text("اليمن"),
                               value: 'اليمن',
+                              child: Text("اليمن"),
                             ),
                             DropdownMenuItem(
-                              child: Text("ليبيا"),
                               value: 'ليبيا',
+                              child: Text("ليبيا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("لبنان"),
                               value: 'لبنان',
+                              child: Text("لبنان"),
                             ),
                             DropdownMenuItem(
-                              child: Text("قطر"),
                               value: 'قطر',
+                              child: Text("قطر"),
                             ),
                             DropdownMenuItem(
-                              child: Text("المملكة العربية السعودية"),
                               value: 'المملكة العربية السعودية',
+                              child: Text("المملكة العربية السعودية"),
                             ),
                             DropdownMenuItem(
-                              child: Text("الكويت"),
                               value: 'الكويت',
+                              child: Text("الكويت"),
                             ),
                             DropdownMenuItem(
-                              child: Text("البحرين"),
                               value: 'البحرين',
+                              child: Text("البحرين"),
                             ),
                             DropdownMenuItem(
-                              child: Text("نيجيريا"),
                               value: 'نيجيريا',
+                              child: Text("نيجيريا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("الجزائر"),
                               value: 'الجزائر',
+                              child: Text("الجزائر"),
                             ),
                             DropdownMenuItem(
-                              child: Text("المغرب"),
                               value: 'المغرب',
+                              child: Text("المغرب"),
                             ),
                             DropdownMenuItem(
-                              child: Text("الاردن"),
                               value: 'الاردن',
+                              child: Text("الاردن"),
                             ),
                             DropdownMenuItem(
-                              child: Text("عمان"),
                               value: 'عمان',
+                              child: Text("عمان"),
                             ),
                             DropdownMenuItem(
-                              child: Text("فلسطين"),
                               value: 'فلسطين',
+                              child: Text("فلسطين"),
                             ),
                             DropdownMenuItem(
-                              child: Text("موريتانيا"),
                               value: 'موريتانيا',
+                              child: Text("موريتانيا"),
                             ),
                             DropdownMenuItem(
-                              child: Text("العراق"),
                               value: 'العراق',
+                              child: Text("العراق"),
                             ),
                             DropdownMenuItem(
-                              child: Text("الصومال"),
                               value: 'الصومال',
+                              child: Text("الصومال"),
                             ),
                           ],
                           iconSize: size.width * .1,
@@ -346,20 +409,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: size.height * .01,
                     ),
-                    SizedBox(
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10,),
+                        color: mainColor,
+                      ),
                       width: double.infinity,
-                      child: OutlinedButton(
+                      child: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             register();
                           }
                         },
                         child: Padding(
-                          padding: EdgeInsets.all(size.width * .04),
+                          padding: EdgeInsets.all(size.width * .02),
                           child: Text(
                             "إنشاء حساب",
                             style: TextStyle(
-                              fontSize: size.width * .07,
+                              fontSize: size.width * .05,
+                              color: backgroundColor,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -392,5 +461,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailController.clear();
     passwordController.clear();
   }
-
 }
