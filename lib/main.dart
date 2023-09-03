@@ -47,6 +47,9 @@ class MyApp extends StatelessWidget {
         ],
         child: FirebaseAuth.instance.currentUser == null ? LoginScreen() : NewHomeScreen(),
       ),
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
       builder: EasyLoading.init(),
     );
   }

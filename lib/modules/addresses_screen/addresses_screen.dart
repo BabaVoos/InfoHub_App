@@ -51,7 +51,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
     child: Container(
       padding: const EdgeInsets.all(10),
       decoration:  BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
         color: backgroundColor,
+
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -25,7 +25,7 @@ class MyJobWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder<QuerySnapshot>(
-            stream: jobsRef.snapshots(),
+            stream: jobsRef.orderBy('publishDate', descending: true).snapshots(),
             builder: (context, snapshots) {
               if (snapshots.connectionState == ConnectionState.waiting) {
                 return const Center(

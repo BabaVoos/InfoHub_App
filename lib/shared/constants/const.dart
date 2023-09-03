@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-class SharedFunctions {
-  static String dateFormatter(Timestamp date) {
-    String formattedDate = DateFormat('Md').format(date.toDate()).toString();
-    return formattedDate;
-  }
+  class SharedFunctions {
+    static String dateFormatter(Timestamp date) {
+      String formattedDate = DateFormat('Md').format(date.toDate()).toString();
+      return formattedDate;
+    }
 
   static Future<void> sendNotification({title, body, userId}) async {
     try {
